@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="kahmad" created="Mon Mar 16 15:35:18 GMT 2015" description="Map To Map" guiVersion="3.4.4.P" id="1426676648934" licenseCode="Unlicensed" licenseType="Unknown" modified="Mon Mar 16 15:35:18 GMT 2015" modifiedBy="kahmad" name="Map_To_Map_1Map_To_Map_2Map_To_Map_3Map_To_Map_4" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/Map" _dataStructure="OBJECT" _id="__id" _type="Input" id="64cf6d7a-ed78-4502-a9be-afa8431ce464">
+<Record fieldDelimiter="," name="Map" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __implementationClass="java.lang.String" __index="0" __sourcePath="{}/Map/companySalesCategory" containerType="SINGLE" label="companySalesCategory" name="companySalesCategory" type="string"/>
+<Field __implementationClass="java.lang.Integer" __index="1" __sourcePath="{}/Map/parentCompanySalesCategorySubTypeId" containerType="SINGLE" label="parentCompanySalesCategorySubTypeId" name="parentCompanySalesCategorySubTypeId" type="integer"/>
+<Field __implementationClass="java.lang.Integer" __index="2" __sourcePath="{}/Map/parentCompanyCountryId" containerType="SINGLE" label="parentCompanyCountryId" name="parentCompanyCountryId" type="integer"/>
+<Field __implementationClass="java.lang.String" __index="3" __sourcePath="{}/Map/parentCompanyCity" containerType="SINGLE" label="parentCompanyCity" name="parentCompanyCity" type="string"/>
+<Field __implementationClass="java.lang.String" __index="4" __sourcePath="{}/Map/parentCompanySalesCategory" containerType="SINGLE" label="parentCompanySalesCategory" name="parentCompanySalesCategory" type="string"/>
+<Field __implementationClass="java.lang.Integer" __index="5" __sourcePath="{}/Map/companySalesCategoryId" containerType="SINGLE" label="companySalesCategoryId" name="companySalesCategoryId" type="integer"/>
+<Field __implementationClass="java.lang.String" __index="6" __sourcePath="{}/Map/parentCompanyCountry" containerType="SINGLE" label="parentCompanyCountry" name="parentCompanyCountry" type="string"/>
+<Field __implementationClass="java.lang.Short" __index="7" __sourcePath="{}/Map/marketSegmentId" containerType="SINGLE" label="marketSegmentId" name="marketSegmentId" type="string"/>
+<Field __implementationClass="java.lang.String" __index="8" __sourcePath="{}/Map/marketSegment" containerType="SINGLE" label="marketSegment" name="marketSegment" type="string"/>
+<Field __implementationClass="java.lang.Integer" __index="9" __sourcePath="{}/Map/companySalesCategorySubTypeId" containerType="SINGLE" label="companySalesCategorySubTypeId" name="companySalesCategorySubTypeId" type="integer"/>
+<Field __implementationClass="java.lang.String" __index="10" __sourcePath="{}/Map/industry" containerType="SINGLE" label="industry" name="industry" type="string"/>
+<Field __implementationClass="java.lang.Integer" __index="11" __sourcePath="{}/Map/businessDevelopmentStatusId" containerType="SINGLE" label="businessDevelopmentStatusId" name="businessDevelopmentStatusId" type="integer"/>
+<Field __implementationClass="java.lang.String" __index="12" __sourcePath="{}/Map/companyCity" containerType="SINGLE" label="companyCity" name="companyCity" type="string"/>
+<Field __implementationClass="java.lang.Integer" __index="13" __sourcePath="{}/Map/companyCountryId" containerType="SINGLE" label="companyCountryId" name="companyCountryId" type="integer"/>
+<Field __implementationClass="java.lang.String" __index="14" __sourcePath="{}/Map/companyName" containerType="SINGLE" label="companyName" name="companyName" type="string"/>
+<Field __implementationClass="java.lang.String" __index="15" __sourcePath="{}/Map/referrer" containerType="SINGLE" label="referrer" name="referrer" type="string"/>
+<Field __implementationClass="java.lang.Integer" __index="16" __sourcePath="{}/Map/parentCompanyId" containerType="SINGLE" label="parentCompanyId" name="parentCompanyId" type="integer"/>
+<Field __implementationClass="java.lang.String" __index="17" __sourcePath="{}/Map/parentCompanyName" containerType="SINGLE" label="parentCompanyName" name="parentCompanyName" type="string"/>
+<Field __implementationClass="java.lang.String" __index="18" __sourcePath="{}/Map/companyCountry" containerType="SINGLE" label="companyCountry" name="companyCountry" type="string"/>
+<Field __implementationClass="java.lang.String" __index="19" __sourcePath="{}/Map/companySalesCategorySubType" containerType="SINGLE" label="companySalesCategorySubType" name="companySalesCategorySubType" type="string"/>
+<Field __implementationClass="java.lang.String" __index="20" __sourcePath="{}/Map/parentCompanySalesCategorySubType" containerType="SINGLE" label="parentCompanySalesCategorySubType" name="parentCompanySalesCategorySubType" type="string"/>
+<Field __implementationClass="java.lang.Integer" __index="21" __sourcePath="{}/Map/companyId" containerType="SINGLE" label="companyId" name="companyId" type="integer"/>
+<Field __implementationClass="java.lang.Short" __index="22" __sourcePath="{}/Map/industryId" containerType="SINGLE" label="industryId" name="industryId" type="string"/>
+<Field __implementationClass="java.lang.Integer" __index="23" __sourcePath="{}/Map/referrerId" containerType="SINGLE" label="referrerId" name="referrerId" type="integer"/>
+<Field __implementationClass="java.lang.String" __index="24" __sourcePath="{}/Map/businessDevelopmentStatus" containerType="SINGLE" label="businessDevelopmentStatus" name="businessDevelopmentStatus" type="string"/>
+<Field __implementationClass="java.lang.Integer" __index="25" __sourcePath="{}/Map/parentCompanySalesCategoryId" containerType="SINGLE" label="parentCompanySalesCategoryId" name="parentCompanySalesCategoryId" type="integer"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/Map" _dataStructure="OBJECT" _id="__id" _type="Output" id="815f45e3-ed21-42d4-a905-aa9495fd18fc">
+<Record fieldDelimiter="," name="Map" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="24" __sourcePath="{}/Map/businessDevelopmentStatus" containerType="SINGLE" label="businessDevelopmentStatus" name="businessDevelopmentStatus" type="string"/>
+<Field __index="11" __sourcePath="{}/Map/businessDevelopmentStatusId" containerType="SINGLE" label="businessDevelopmentStatusId" name="businessDevelopmentStatusId" type="integer"/>
+<Field __index="12" __sourcePath="{}/Map/companyCity" containerType="SINGLE" label="companyCity" name="companyCity" type="string"/>
+<Field __index="18" __sourcePath="{}/Map/companyCountry" containerType="SINGLE" label="companyCountry" name="companyCountry" type="string"/>
+<Field __index="13" __sourcePath="{}/Map/companyCountryId" containerType="SINGLE" label="companyCountryId" name="companyCountryId" type="integer"/>
+<Field __index="21" __sourcePath="{}/Map/companyId" containerType="SINGLE" label="companyId" name="companyId" type="integer"/>
+<Field __index="14" __sourcePath="{}/Map/companyName" containerType="SINGLE" label="companyName" name="companyName" type="string"/>
+<Field __index="0" __sourcePath="{}/Map/companySalesCategory" containerType="SINGLE" label="companySalesCategory" name="companySalesCategory" type="string"/>
+<Field __index="5" __sourcePath="{}/Map/companySalesCategoryId" containerType="SINGLE" label="companySalesCategoryId" name="companySalesCategoryId" type="integer"/>
+<Field __index="19" __sourcePath="{}/Map/companySalesCategorySubType" containerType="SINGLE" label="companySalesCategorySubType" name="companySalesCategorySubType" type="string"/>
+<Field __index="9" __sourcePath="{}/Map/companySalesCategorySubTypeId" containerType="SINGLE" label="companySalesCategorySubTypeId" name="companySalesCategorySubTypeId" type="integer"/>
+<Field __index="10" __sourcePath="{}/Map/industry" containerType="SINGLE" label="industry" name="industry" type="string"/>
+<Field __index="22" __sourcePath="{}/Map/industryId" containerType="SINGLE" label="industryId" name="industryId" type="string"/>
+<Field __index="8" __sourcePath="{}/Map/marketSegment" containerType="SINGLE" label="marketSegment" name="marketSegment" type="string"/>
+<Field __index="7" __sourcePath="{}/Map/marketSegmentId" containerType="SINGLE" label="marketSegmentId" name="marketSegmentId" type="string"/>
+<Field __index="3" __sourcePath="{}/Map/parentCompanyCity" containerType="SINGLE" label="parentCompanyCity" name="parentCompanyCity" type="string"/>
+<Field __index="6" __sourcePath="{}/Map/parentCompanyCountry" containerType="SINGLE" label="parentCompanyCountry" name="parentCompanyCountry" type="string"/>
+<Field __index="2" __sourcePath="{}/Map/parentCompanyCountryId" containerType="SINGLE" label="parentCompanyCountryId" name="parentCompanyCountryId" type="integer"/>
+<Field __index="16" __sourcePath="{}/Map/parentCompanyId" containerType="SINGLE" label="parentCompanyId" name="parentCompanyId" type="integer"/>
+<Field __index="17" __sourcePath="{}/Map/parentCompanyName" containerType="SINGLE" label="parentCompanyName" name="parentCompanyName" type="string"/>
+<Field __index="4" __sourcePath="{}/Map/parentCompanySalesCategory" containerType="SINGLE" label="parentCompanySalesCategory" name="parentCompanySalesCategory" type="string"/>
+<Field __index="25" __sourcePath="{}/Map/parentCompanySalesCategoryId" containerType="SINGLE" label="parentCompanySalesCategoryId" name="parentCompanySalesCategoryId" type="integer"/>
+<Field __index="20" __sourcePath="{}/Map/parentCompanySalesCategorySubType" containerType="SINGLE" label="parentCompanySalesCategorySubType" name="parentCompanySalesCategorySubType" type="string"/>
+<Field __index="1" __sourcePath="{}/Map/parentCompanySalesCategorySubTypeId" containerType="SINGLE" label="parentCompanySalesCategorySubTypeId" name="parentCompanySalesCategorySubTypeId" type="integer"/>
+<Field __index="15" __sourcePath="{}/Map/referrer" containerType="SINGLE" label="referrer" name="referrer" type="string"/>
+<Field __index="23" __sourcePath="{}/Map/referrerId" containerType="SINGLE" label="referrerId" name="referrerId" type="integer"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" fileURL="dict:inputPayload" guiName="Map&lt;k,v&gt; READER" guiX="20" guiY="20" id="BEAN_READER0" type="BEAN_READER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context outPort="0" sequenceField="__id" xpath=".">
+  <Mapping cloverField="companySalesCategory" trim="true" xpath="companySalesCategory"/>
+  <Mapping cloverField="parentCompanySalesCategorySubTypeId" trim="true" xpath="parentCompanySalesCategorySubTypeId"/>
+  <Mapping cloverField="parentCompanyCountryId" trim="true" xpath="parentCompanyCountryId"/>
+  <Mapping cloverField="parentCompanyCity" trim="true" xpath="parentCompanyCity"/>
+  <Mapping cloverField="parentCompanySalesCategory" trim="true" xpath="parentCompanySalesCategory"/>
+  <Mapping cloverField="companySalesCategoryId" trim="true" xpath="companySalesCategoryId"/>
+  <Mapping cloverField="parentCompanyCountry" trim="true" xpath="parentCompanyCountry"/>
+  <Mapping cloverField="marketSegmentId" trim="true" xpath="marketSegmentId"/>
+  <Mapping cloverField="marketSegment" trim="true" xpath="marketSegment"/>
+  <Mapping cloverField="companySalesCategorySubTypeId" trim="true" xpath="companySalesCategorySubTypeId"/>
+  <Mapping cloverField="industry" trim="true" xpath="industry"/>
+  <Mapping cloverField="businessDevelopmentStatusId" trim="true" xpath="businessDevelopmentStatusId"/>
+  <Mapping cloverField="companyCity" trim="true" xpath="companyCity"/>
+  <Mapping cloverField="companyCountryId" trim="true" xpath="companyCountryId"/>
+  <Mapping cloverField="companyName" trim="true" xpath="companyName"/>
+  <Mapping cloverField="referrer" trim="true" xpath="referrer"/>
+  <Mapping cloverField="parentCompanyId" trim="true" xpath="parentCompanyId"/>
+  <Mapping cloverField="parentCompanyName" trim="true" xpath="parentCompanyName"/>
+  <Mapping cloverField="companyCountry" trim="true" xpath="companyCountry"/>
+  <Mapping cloverField="companySalesCategorySubType" trim="true" xpath="companySalesCategorySubType"/>
+  <Mapping cloverField="parentCompanySalesCategorySubType" trim="true" xpath="parentCompanySalesCategorySubType"/>
+  <Mapping cloverField="companyId" trim="true" xpath="companyId"/>
+  <Mapping cloverField="industryId" trim="true" xpath="industryId"/>
+  <Mapping cloverField="referrerId" trim="true" xpath="referrerId"/>
+  <Mapping cloverField="businessDevelopmentStatus" trim="true" xpath="businessDevelopmentStatus"/>
+  <Mapping cloverField="parentCompanySalesCategoryId" trim="true" xpath="parentCompanySalesCategoryId"/>
+</Context>
+]]></attr>
+<attr name="_data_format"><![CDATA[MAP]]></attr>
+<attr name="__metadata"><![CDATA[true]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'Map' -&gt; 'Map'" guiX="460" guiY="20" id="FOREACH_MAP_MAP" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+//END -> DO NOT REMOVE
+output.companySalesCategory = input.companySalesCategory;
+output.parentCompanySalesCategorySubTypeId = input.parentCompanySalesCategorySubTypeId;
+output.parentCompanyCountryId = input.parentCompanyCountryId;
+output.parentCompanyCity = input.parentCompanyCity;
+output.parentCompanySalesCategory = input.parentCompanySalesCategory;
+output.companySalesCategoryId = input.companySalesCategoryId;
+output.parentCompanyCountry = input.parentCompanyCountry;
+output.marketSegmentId = input.marketSegmentId;
+output.marketSegment = input.marketSegment;
+output.companySalesCategorySubTypeId = input.companySalesCategorySubTypeId;
+output.industry = input.industry;
+output.businessDevelopmentStatusId = input.businessDevelopmentStatusId;
+output.companyCity = input.companyCity;
+output.companyCountryId = input.companyCountryId;
+output.companyName = input.companyName;
+output.referrer = input.referrer;
+output.parentCompanyId = input.parentCompanyId;
+output.parentCompanyName = input.parentCompanyName;
+output.companyCountry = input.companyCountry;
+output.companySalesCategorySubType = input.companySalesCategorySubType;
+output.parentCompanySalesCategorySubType = input.parentCompanySalesCategorySubType;
+output.companyId = input.companyId;
+output.industryId = input.industryId;
+output.referrerId = input.referrerId;
+output.businessDevelopmentStatus = input.businessDevelopmentStatus;
+output.parentCompanySalesCategoryId = input.parentCompanySalesCategoryId;
+]]></attr>
+</Node>
+<Node cacheInMemory="true" enabled="enabled" fileURL="dict:outputPayload" guiName="Map&lt;k,v&gt; WRITER" guiX="900" guiY="20" id="MAP_WRITER0" type="MAP_WRITER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<Map xmlns:clover="http://www.cloveretl.com/ns/xmlmapping" clover:inPort="0">
+  <companySalesCategory>$0.companySalesCategory</companySalesCategory>
+  <parentCompanySalesCategorySubTypeId>$0.parentCompanySalesCategorySubTypeId</parentCompanySalesCategorySubTypeId>
+  <parentCompanyCountryId>$0.parentCompanyCountryId</parentCompanyCountryId>
+  <parentCompanyCity>$0.parentCompanyCity</parentCompanyCity>
+  <parentCompanySalesCategory>$0.parentCompanySalesCategory</parentCompanySalesCategory>
+  <companySalesCategoryId>$0.companySalesCategoryId</companySalesCategoryId>
+  <parentCompanyCountry>$0.parentCompanyCountry</parentCompanyCountry>
+  <marketSegmentId>$0.marketSegmentId</marketSegmentId>
+  <marketSegment>$0.marketSegment</marketSegment>
+  <companySalesCategorySubTypeId>$0.companySalesCategorySubTypeId</companySalesCategorySubTypeId>
+  <industry>$0.industry</industry>
+  <businessDevelopmentStatusId>$0.businessDevelopmentStatusId</businessDevelopmentStatusId>
+  <companyCity>$0.companyCity</companyCity>
+  <companyCountryId>$0.companyCountryId</companyCountryId>
+  <companyName>$0.companyName</companyName>
+  <referrer>$0.referrer</referrer>
+  <parentCompanyId>$0.parentCompanyId</parentCompanyId>
+  <parentCompanyName>$0.parentCompanyName</parentCompanyName>
+  <companyCountry>$0.companyCountry</companyCountry>
+  <companySalesCategorySubType>$0.companySalesCategorySubType</companySalesCategorySubType>
+  <parentCompanySalesCategorySubType>$0.parentCompanySalesCategorySubType</parentCompanySalesCategorySubType>
+  <companyId>$0.companyId</companyId>
+  <industryId>$0.industryId</industryId>
+  <referrerId>$0.referrerId</referrerId>
+  <businessDevelopmentStatus>$0.businessDevelopmentStatus</businessDevelopmentStatus>
+  <parentCompanySalesCategoryId>$0.parentCompanySalesCategoryId</parentCompanySalesCategoryId>
+</Map>]]></attr>
+<attr name="_data_format"><![CDATA[MAP]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="BEAN_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="64cf6d7a-ed78-4502-a9be-afa8431ce464" outPort="Port 0 (out)" toNode="FOREACH_MAP_MAP:0"/>
+<Edge debugMode="true" fromNode="FOREACH_MAP_MAP:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="815f45e3-ed21-42d4-a905-aa9495fd18fc" outPort="Port 0 (out)" toNode="MAP_WRITER0:0"/>
+</Phase>
+</Graph>

@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.6.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
+    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" basePath="test" doc:name="HTTP Listener Configuration"/>
+    <db:mysql-config name="SourceDatabaseConfig" host="localhost" port="3306" user="root" password="root" database="lmm" doc:name="Source Database Configuration"/>
+    <db:generic-config name="TargetDatabaseConfig" url="jdbc:postgresql://localhost:5432/lmm_dw?user=postgres&amp;password=root" driverClassName="org.postgresql.Driver" doc:name="Target Database Configuration"/>
+    <data-mapper:config name="Map_To_Map" transformationGraphPath="map_to_map.grf" doc:name="Map_To_Map"/>
+    <data-mapper:config name="Map_To_Map_1" transformationGraphPath="map_to_map_1.grf" doc:name="Map_To_Map_1"/>
+    <data-mapper:config name="Map_To_Map_1Map_To_Map_2" transformationGraphPath="map_to_map_2.grf" doc:name="Map_To_Map_1Map_To_Map_2"/>
+    <data-mapper:config name="Map_To_Map_1Map_To_Map_2Map_To_Map_3" transformationGraphPath="map_to_map_3.grf" doc:name="Map_To_Map_1Map_To_Map_2Map_To_Map_3"/>
+    <data-mapper:config name="Map_To_Map_1Map_To_Map_2Map_To_Map_3Map_To_Map_4" transformationGraphPath="map_to_map_4.grf" doc:name="Map_To_Map_1Map_To_Map_2Map_To_Map_3Map_To_Map_4"/>
+    <flow name="data_migrationFlow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/" doc:name="HTTP" allowedMethods="get">
+            <http:response-builder statusCode="400"/>
+        </http:listener>
+        <set-session-variable variableName="date" value="#[message.inboundProperties.'http.query.params'.get('date')]" doc:name="Session Variable"/>
+        <logger message="Start Processing ETL" level="INFO" doc:name="Logger"/>
+        <batch:execute name="batch-process-user" doc:name="Batch Execute -- USER"/>
+        <logger message="ETL Processing Completed" level="INFO" doc:name="Logger"/>
+        <echo-component doc:name="Echo"/>
+    </flow>
+    <batch:job name="batch-process-user">
+        <batch:input>
+            <logger message="Batch Process for User Started" level="INFO" doc:name="Logger"/>
+            <db:select config-ref="SourceDatabaseConfig" doc:name="Select Users">
+                <db:parameterized-query><![CDATA[select u.id, u.username, u.firstName, u.lastName from user u
+where u.deleted = 0]]></db:parameterized-query>
+            </db:select>
+        </batch:input>
+        <batch:process-records>
+            <batch:step name="insert-update-user">
+                <data-mapper:transform config-ref="Map_To_Map" doc:name="Map To Map"/>
+                <db:execute-ddl config-ref="TargetDatabaseConfig" doc:name="Update or Insert User Record">
+                    <db:dynamic-query><![CDATA[WITH upsert AS	 
+	(UPDATE users SET "fullName" = '#[payload.firstName] #[payload.lastName]', username = '#[payload.username]' WHERE "userId" = #[payload.id] RETURNING *) 
+	 INSERT INTO users("userId", username, "fullName") SELECT #[payload.id] , '#[payload.username]', '#[payload.firstName] #[payload.lastName]'
+	  WHERE NOT EXISTS (SELECT * from upsert)]]></db:dynamic-query>
+                </db:execute-ddl>
+            </batch:step>
+        </batch:process-records>
+        <batch:on-complete>
+            <logger message="Batch Process for User Completed" level="INFO" doc:name="Logger"/>
+            <batch:execute name="batch-process-team" doc:name="Batch Execute -- TEAM"/>
+        </batch:on-complete>
+    </batch:job>
+    <batch:job name="batch-process-team">
+        <batch:input>
+            <logger message="Batch Process for Team Started" level="INFO" doc:name="Logger"/>
+            <db:select config-ref="SourceDatabaseConfig" doc:name="Select Team Records">
+                <db:parameterized-query><![CDATA[select t.id, t.teamName from team t 
+where t.deleted = 0]]></db:parameterized-query>
+            </db:select>
+        </batch:input>
+        <batch:process-records>
+            <batch:step name="insert-update-team">
+                <db:execute-ddl config-ref="TargetDatabaseConfig" doc:name="Update or Insert Team Record">
+                    <db:dynamic-query><![CDATA[WITH upsert AS	 
+	(UPDATE team SET "teamName" = '#[payload.teamName]' WHERE "teamId" = #[payload.id] RETURNING *) 
+	 INSERT INTO team("teamId", "teamName") SELECT #[payload.id] , '#[payload.teamName]'
+	  WHERE NOT EXISTS (SELECT * from upsert)]]></db:dynamic-query>
+                </db:execute-ddl>
+            </batch:step>
+        </batch:process-records>
+        <batch:on-complete>
+            <logger message="Batch Process for Team Completed" level="INFO" doc:name="Logger"/>
+            <batch:execute name="data-process-users_teams" doc:name="Batch Execute -- USERS TEAMS"/>
+        </batch:on-complete>
+    </batch:job>
+    <batch:job name="data-process-users_teams">
+        <batch:input>
+            <logger message="Batch Process for User Team Refs Started" level="INFO" doc:name="Logger"/>
+            <db:delete config-ref="TargetDatabaseConfig" doc:name="Remove User Team Ref">
+                <db:parameterized-query><![CDATA[delete from user_team;]]></db:parameterized-query>
+            </db:delete>
+            <db:select config-ref="SourceDatabaseConfig" doc:name="Select User Team Refs">
+                <db:parameterized-query><![CDATA[Select userId, teamId from user_team]]></db:parameterized-query>
+            </db:select>
+        </batch:input>
+        <batch:process-records>
+            <batch:step name="insert-user-team-ref">
+                <db:insert config-ref="TargetDatabaseConfig" doc:name="Update or Insert User Team Ref">
+                    <db:parameterized-query><![CDATA[INSERT INTO user_team("userId", "teamId") VALUES (#[payload.userId], #[payload.teamId])]]></db:parameterized-query>
+                </db:insert>
+            </batch:step>
+        </batch:process-records>
+        <batch:on-complete>
+            <logger message="Batch Process for User Team Refs Completed" level="INFO" doc:name="Logger"/>
+            <batch:execute name="batch-process-country" doc:name="Batch Execute -- Country"/>
+        </batch:on-complete>
+    </batch:job>
+    <batch:job name="batch-process-country">
+        <batch:input>
+            <logger message="Batch Process for Country Started" level="INFO" doc:name="Logger"/>
+            <db:select config-ref="SourceDatabaseConfig" doc:name="Select Countries">
+                <db:parameterized-query><![CDATA[select c.id, c.name from country c
+where c.deleted = 0]]></db:parameterized-query>
+            </db:select>
+        </batch:input>
+        <batch:process-records>
+            <batch:step name="insert-update-country">
+                <data-mapper:transform config-ref="Map_To_Map_1Map_To_Map_2" doc:name="Map To Map"/>
+                <db:execute-ddl config-ref="TargetDatabaseConfig" doc:name="Update or Insert Country">
+                    <db:dynamic-query><![CDATA[WITH upsert AS 
+	(UPDATE country SET "countryName"='#[payload.name]' WHERE "countryId"=#[payload.id] RETURNING *)
+	INSERT INTO country("countryId", "countryName") SELECT #[payload.id] , '#[payload.name]'
+	WHERE NOT EXISTS (SELECT * from upsert)]]></db:dynamic-query>
+                </db:execute-ddl>
+            </batch:step>
+        </batch:process-records>
+        <batch:on-complete>
+            <logger message="Batch Process for Country Completed" level="INFO" doc:name="Logger"/>
+            <batch:execute name="batch-process-blockapartmenttype" doc:name="Batch Execute -- BlockApartmentType"/>
+        </batch:on-complete>
+    </batch:job>
+    <batch:job name="batch-process-blockapartmenttype">
+        <batch:input>
+            <logger message="Batch Process for BlockApartmentType Started" level="INFO" doc:name="Logger"/>
+            <db:select config-ref="SourceDatabaseConfig" doc:name="Select BlockApartmentType Records">
+                <db:parameterized-query><![CDATA[select 
+	bat.id as blockApartmentTypeId,
+	IF(ISNULL(c.networkCommunityId), 'MANAGED', 'NETWORK') as propertyType,
+	c.`name` as communityName,
+	c.id as communityId,
+	b.`name` as block,
+	b.id as blockId, 
+	'TBC' as blockClassification,
+	bat.`name` as blockApartmentTypeName,
+	`at`.numberOfBedrooms as numberOfBedrooms,
+	n.`name` as neighbourhood,
+	n.id as neighbourhoodId,
+	city.`name` as city,
+	city.id as cityId,
+	r.`name` as region,
+	r.id as regionId,
+	cou.`name` as country,
+	cou.id as countryId,
+	p.id as portfolioId,
+	b.propertyOwnerId as propertyOwnerCompanyId
+
+from blockapartmenttype bat
+JOIN block b ON bat.blockId = b.id
+JOIN community c ON b.communityId = c.id
+JOIN apartmenttype `at` ON bat.apartmentTypeId = `at`.id
+JOIN neighbourhood n ON c.neighbourhoodId = n.id
+JOIN city city ON n.cityId = city.id
+JOIN region r ON city.regionId = r.id
+JOIN country cou ON r.countryId = cou.id
+LEFT JOIN portfolio p ON c.portfolioId = p.id
+
+UNION 
+
+select 
+	bat.id as blockApartmentTypeId,
+	IF(ISNULL(c.networkCommunityId), 'MANAGED', 'NETWORK') as propertyType,
+	c.`name` as communityName,
+	c.id as communityId,
+	null as block,
+	null blockId,
+	'NETWORK' as blockClassification,
+	bat.`name` as blockApartmentTypeName,
+	`at`.numberOfBedrooms as numberOfBedrooms,
+	n.`name` as neighbourhood,
+	n.id as neighbourhoodId,
+	city.`name` as city,
+	city.id as cityId,
+	r.`name` as region,
+	r.id as regionId,
+	cou.`name` as country,
+	cou.id as countryId,
+	p.id as portfolioId,
+	nc.networkProviderId propertyOwnerCompanyId
+
+from blockapartmenttype bat
+JOIN community c ON bat.communityId = c.id
+JOIN networkcommunity nc ON c.networkCommunityId = nc.id
+JOIN apartmenttype `at` ON bat.apartmentTypeId = `at`.id
+JOIN neighbourhood n ON c.neighbourhoodId = n.id
+JOIN city city ON n.cityId = city.id
+JOIN region r ON city.regionId = r.id
+JOIN country cou ON r.countryId = cou.id
+LEFT JOIN portfolio p ON c.portfolioId = p.id]]></db:parameterized-query>
+            </db:select>
+        </batch:input>
+        <batch:process-records>
+            <batch:step name="insert-update-blockapartmenttype">
+                <data-mapper:transform config-ref="Map_To_Map_1" doc:name="Map To Map"/>
+                <db:execute-ddl config-ref="TargetDatabaseConfig" doc:name="Update or Insert Block Apartment Type">
+                    <db:dynamic-query><![CDATA[WITH upsert AS (UPDATE block_apartment_type 
+   SET  "propertyType"='#[payload.propertyType]', community='#[payload.communityName]', "communityId"=#[payload.communityId], 
+        block='#[payload.block]', "blockId"=#[payload.blockId], "blockClassification"='#[payload.blockClassification]', 
+		"blockApartmentTypeName"='#[payload.blockApartmentTypeName]', "apartmentTypeName"='#[payload.blockApartmentTypeName]', "numberOfBedrooms"=#[payload.numberOfBedrooms], 
+		neighbourhood='#[payload.neighbourhood]', "neighbourhoodId"=#[payload.neighbourhoodId], 
+		city='#[payload.city]', "cityId"=#[payload.cityId], region='#[payload.region]', "regionId"=#[payload.regionId], 
+		"countryId"=#[payload.countryId], "portfolioId"=#[payload.portfolioId], "ownerId"=#[payload.propertyOwnerCompanyId]
+   WHERE "blockApartmentTypeId"=#[payload.blockApartmentTypeId] RETURNING *)
+ 
+   INSERT INTO block_apartment_type(
+            "blockApartmentTypeId", "propertyType", community, "communityId", 
+            block, "blockId", "blockClassification", "blockApartmentTypeName", 
+            "apartmentTypeName", "numberOfBedrooms", neighbourhood, "neighbourhoodId", 
+            city, "cityId", region, "regionId", "countryId", "portfolioId", 
+            "ownerId")
+   Select #[payload.blockApartmentTypeId], '#[payload.propertyType]', '#[payload.communityName]', #[payload.communityId], 
+          '#[payload.block]', #[payload.blockId], '#[payload.blockClassification]', '#[payload.blockApartmentTypeName]', 
+          '#[payload.blockApartmentTypeName]', #[payload.numberOfBedrooms], '#[payload.neighbourhood]', #[payload.neighbourhoodId], 
+          '#[payload.city]', #[payload.cityId], '#[payload.region]', #[payload.regionId], #[payload.countryId], #[payload.portfolioId], 
+		  #[payload.propertyOwnerCompanyId]
+
+WHERE NOT EXISTS (SELECT * from upsert)]]></db:dynamic-query>
+                </db:execute-ddl>
+            </batch:step>
+        </batch:process-records>
+        <batch:on-complete>
+            <logger message="Batch Process for BlockApartmentType Completed" level="INFO" doc:name="Logger"/>
+            <batch:execute name="batch-process-channel" doc:name="Batch Execute -- Channel"/>
+        </batch:on-complete>
+    </batch:job>
+    <batch:job name="batch-process-channel">
+        <batch:input>
+            <logger level="INFO" doc:name="Logger" message="Batch Process for Channel Started"/>
+            <db:select config-ref="SourceDatabaseConfig" doc:name="Select Channel Records">
+                <db:parameterized-query><![CDATA[select 
+    c.id as channelId,
+	c.`name` as channelName,
+	c.channelCode as channelCode,
+	co.companyName as channelCompany,
+	co.id as channelCompanyId,
+	null as channelCategory
+from channel c
+LEFT JOIN client cl ON c.clientId = cl.id
+LEFT JOIN company co ON cl.companyId = co.id]]></db:parameterized-query>
+            </db:select>
+        </batch:input>
+        <batch:process-records>
+            <batch:step name="insert-update-channel">
+                <data-mapper:transform config-ref="Map_To_Map_1Map_To_Map_2Map_To_Map_3" doc:name="Map To Map"/>
+                <db:execute-ddl config-ref="TargetDatabaseConfig" doc:name="Update or Insert Channel Record">
+                    <db:dynamic-query><![CDATA[WITH upsert AS (UPDATE channel
+   SET "channelName"=#[payload.channelName], "channelCode"=#[payload.channelCode], "channelCompany"=#[payload.channelCompany], 
+       "channelCompanyId"=#[payload.channelCompanyId]
+ WHERE "channelId"=#[payload.channelId]
+ RETURNING *)
+ 
+   INSERT INTO channel(
+            "channelId", "channelName", "channelCode", "channelCompany", 
+            "channelCompanyId")
+    SELECT #[payload.channelId], #[payload.channelName], #[payload.channelCode], #[payload.channelCompany], 
+            #[payload.channelCompanyId]
+
+
+WHERE NOT EXISTS (SELECT * from upsert)]]></db:dynamic-query>
+                </db:execute-ddl>
+            </batch:step>
+        </batch:process-records>
+        <batch:on-complete>
+            <logger level="INFO" doc:name="Logger" message="Batch Process for Channel Completed"/>
+        </batch:on-complete>
+    </batch:job>
+    
+</mule>
